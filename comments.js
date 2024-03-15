@@ -1,26 +1,33 @@
-// create web server
-// create web server
-const express = require('express');
-const app = express();
-const port = 3000;
+// Create web server
+// Run: node comments.js
+// Open browser: http://localhost:3000/
 
-// middleware
-app.use(express.json());
+var express = require('express');
+var bodyParser = require('body-parser');
+var app = express();
 
-// data
-const comments = [
-  { id: 1, author: 'user1', content: 'content1' },
-  { id: 2, author: 'user2', content: 'content2' },
-  { id: 3, author: 'user3', content: 'content3' },
-];
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-// routes
-app.get('/comments', (req, res) => {
-    res.json(comments);
+app.get('/', function(req, res) {
+    res.send('Hello World');
 });
 
-app.post('/comments', (req, res) => {
-    const comment = {   
-        id: comments.length + 1,
-    }; // Add a closing curly brace here
-git add comments.js
+app.get('/comments', function(req, res) {
+    res.json([{
+        "author": "Pete Hunt",
+        "text": "This is one comment"
+    }, {
+        "author": "Jordan Walke",
+        "text": "This is *another* comment"
+    }]);
+});
+
+app.post('/comments', function(req, res) {
+    console.log(req.body);
+    res.json(req.body);
+});
+
+app.listen(3000, function() {
+    console.log('Server is running on port 3000');
+});
